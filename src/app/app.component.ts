@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Trip } from './app.trip';
+import { Trip, TripService } from './shared';
 
 @Component({
   selector: 'app-root',
@@ -7,19 +7,17 @@ import { Trip } from './app.trip';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Travel App';
-  public trips = [];
-  public newTrip = new Trip();
-  public trip:Trip;
-  
-  addTrip(newTrip) {
-    this.trip = new Trip();
-    this.trip.title = newTrip.title;
-    this.trips.push(this.trip);
-    this.newTrip.title = '';
+  newTrip :Trip = new Trip();
+
+  constructor(private tripService: TripService) {
   }
 
-  // deleteTrip(trip) {
-  //   this.trips.pop(trip);
-  // }
+  addTrip() {
+  	console.log("Saving", this.newTrip);
+    this.tripService.save(this.newTrip).subscribe((result) => {
+    	console.log(result);
+    	this.newTrip = new Trip();	
+    });
+  }
 }
+
